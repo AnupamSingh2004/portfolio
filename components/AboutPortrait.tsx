@@ -3,26 +3,107 @@ import { useRef, useEffect } from 'react';
 
 export default function AboutPortrait() {
   const cardRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const layerRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
     const card = cardRef.current;
+    const canvas = canvasRef.current;
     const layer = layerRef.current;
-    if (!card || !layer) return;
+    if (!card || !canvas || !layer) return;
+
+    const ctx = canvas.getContext('2d')!;
+    const spacing = 20;
+    let w = 0, h = 0;
+    let dots: { x: number; y: number }[] = [];
+
+    const resize = () => {
+      w = card.offsetWidth;
+      h = card.offsetHeight;
+      canvas.width = w;
+      canvas.height = h;
+      dots = [];
+      for (let x = 10; x < w; x += spacing)
+        for (let y = 10; y < h; y += spacing)
+          dots.push({ x, y });
+    };
+    resize();
+
+    // Lerped values
+    let mx = -999, my = -999;
+    let targetMx = -999, targetMy = -999;
+    let influence = 0, targetInfluence = 0;
+    let rafId: number;
+
+    const render = () => {
+      rafId = requestAnimationFrame(render);
+
+      // Smooth lerp
+      mx += (targetMx - mx) * 0.1;
+      my += (targetMy - my) * 0.1;
+      influence += (targetInfluence - influence) * 0.07;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const radius = 100;
+
+      // Base dots pass
+      ctx.shadowBlur = 0;
+      for (const dot of dots) {
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, 1, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(198,255,61,0.28)';
+        ctx.fill();
+      }
+
+      // Glow pass — only dots near cursor
+      if (influence > 0.01) {
+        for (const dot of dots) {
+          const dx = dot.x - mx;
+          const dy = dot.y - my;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist >= radius) continue;
+
+          const t = (1 - dist / radius) * influence;
+          const size = 1 + t * 3;
+          const alpha = 0.28 + t * 0.72;
+
+          ctx.shadowBlur = t * 12;
+          ctx.shadowColor = '#c6ff3d';
+          ctx.beginPath();
+          ctx.arc(dot.x, dot.y, size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(198,255,61,${alpha})`;
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+      }
+    };
+    render();
 
     const onMove = (e: MouseEvent) => {
       const r = card.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width - 0.5) * 22;
-      const y = ((e.clientY - r.top) / r.height - 0.5) * 22;
-      layer.style.transform = `translate(${x}px, ${y}px)`;
+      targetMx = e.clientX - r.left;
+      targetMy = e.clientY - r.top;
+      targetInfluence = 1;
+      // Parallax on SVG layer
+      const px = ((e.clientX - r.left) / r.width - 0.5) * 22;
+      const py = ((e.clientY - r.top) / r.height - 0.5) * 22;
+      layer.style.transform = `translate(${px}px, ${py}px)`;
     };
-    const onLeave = () => { layer.style.transform = 'translate(0,0)'; };
+    const onLeave = () => {
+      targetInfluence = 0;
+      layer.style.transform = 'translate(0,0)';
+    };
 
     card.addEventListener('mousemove', onMove);
     card.addEventListener('mouseleave', onLeave);
+    window.addEventListener('resize', resize);
+
     return () => {
+      cancelAnimationFrame(rafId);
       card.removeEventListener('mousemove', onMove);
       card.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('resize', resize);
     };
   }, []);
 
@@ -62,27 +143,23 @@ export default function AboutPortrait() {
       <div className="ap-corner-tl" />
       <div className="ap-corner-br" />
 
-      <svg
-        viewBox="0 0 400 500"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
-        preserveAspectRatio="xMidYMid slice"
-      >
+      {/* Background gradient */}
+      <svg viewBox="0 0 400 500" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="por" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stopColor="#1a2a0d" />
             <stop offset="1" stopColor="#050505" />
           </linearGradient>
-          <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="10" cy="10" r="1" fill="#c6ff3d" opacity="0.3" />
-          </pattern>
         </defs>
-
         <rect width="400" height="500" fill="url(#por)" />
-        <rect width="400" height="500" fill="url(#dots)" />
+      </svg>
 
-        {/* Parallax group */}
+      {/* Interactive dots canvas */}
+      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+
+      {/* Circles + radar + text on top */}
+      <svg viewBox="0 0 400 500" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
         <g ref={layerRef} className="ap-layer">
-
           {/* Ping rings */}
           <circle cx="200" cy="220" r="90" fill="none" stroke="#c6ff3d" strokeWidth="1">
             <animate attributeName="r" values="90;150" dur="3s" repeatCount="indefinite" />
@@ -103,17 +180,14 @@ export default function AboutPortrait() {
             <animateTransform attributeName="transform" type="rotate" from="0 200 220" to="360 200 220" dur="4s" repeatCount="indefinite" />
           </line>
 
-          {/* Center text */}
           <text x="200" y="228" textAnchor="middle" fontFamily="Instrument Serif" fontStyle="italic" fontSize="64" fill="#f5f5f0">as</text>
         </g>
 
-        {/* Coords */}
         <g transform="translate(40,440)" fill="#8a8a85" fontFamily="Geist Mono" fontSize="10" letterSpacing="2">
           <text>LAT 23.1815</text>
           <text y="14">LON 79.9864</text>
         </g>
 
-        {/* LIVE */}
         <text x="360" y="40" textAnchor="end" fontFamily="Geist Mono" fontSize="10" letterSpacing="2" fill="#c6ff3d">
           <tspan className="ap-live">●</tspan>
           <tspan> LIVE</tspan>
