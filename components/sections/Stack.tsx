@@ -1,10 +1,13 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
 import { skillCategories } from '@/data/skills';
 
 const SkillsGlobe = dynamic(() => import('@/components/SkillsGlobe'), { ssr: false });
 
 export default function Stack() {
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
   return (
     <section id="stack">
       <div className="container">
@@ -17,12 +20,17 @@ export default function Stack() {
               <span>TOPOLOGY / ICOSAHEDRON.4K</span>
               <span className="live">● RENDERING</span>
             </div>
-            <SkillsGlobe />
+            <SkillsGlobe activeCategory={activeCategory} />
           </div>
 
           <div className="skills-cats">
             {skillCategories.map((cat) => (
-              <div key={cat.name} className="skill-cat">
+              <div
+                key={cat.name}
+                className="skill-cat"
+                onMouseEnter={() => setActiveCategory(cat.name)}
+                onMouseLeave={() => setActiveCategory(null)}
+              >
                 <div className="skill-cat-head">
                   <div className="skill-cat-name">{cat.name}</div>
                   <div className="skill-cat-num">{cat.count}</div>
