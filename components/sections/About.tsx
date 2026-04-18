@@ -38,7 +38,7 @@ export default function About() {
             <div className="tag"><span className="num">■</span> IDX.001 — ANUPAM SINGH — 2026</div>
           </div>
 
-          <div className="about-body reveal" style={{ paddingTop: '80px' }}>
+          <div className="about-body reveal" style={{ paddingTop: '160px' }}>
             <p>
               I&apos;m a computer science undergraduate who treats <em>systems thinking</em> like
               a craft — designing backends that don&apos;t break under load, deploying infrastructure
