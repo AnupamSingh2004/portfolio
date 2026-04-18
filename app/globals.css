@@ -400,13 +400,14 @@ section {
 
 .hero h1 {
   font-family: var(--serif);
-  font-size: clamp(40px, 6.5vw, 96px);
+  font-size: clamp(52px, 7vw, 128px);
   line-height: .96;
   letter-spacing: -0.03em;
   font-weight: 400;
-  max-width: 900px;
+  max-width: max(900px, 60vw);
 }
-.hero h1 .line { display: block; overflow: hidden; }
+/* padding-bottom lets descenders (g, y, p) breathe; negative margin cancels the extra gap */
+.hero h1 .line { display: block; overflow: hidden; padding-bottom: 0.18em; margin-bottom: -0.18em; }
 .hero h1 .word { display: inline-block; }
 .hero h1 em { color: var(--accent); font-style: italic; }
 
@@ -416,8 +417,6 @@ section {
   gap: 40px;
   align-items: end;
   margin-top: 40px;
-  padding-top: 30px;
-  border-top: 1px solid var(--line);
 }
 .hero-sub p {
   font-family: var(--serif);
@@ -425,6 +424,8 @@ section {
   line-height: 1.5;
   max-width: 540px;
   color: var(--ink-dim);
+  border-top: 1px solid var(--line);
+  padding-top: 30px;
 }
 .hero-sub p span { color: var(--ink); font-style: italic; }
 .hero-cta {
