@@ -606,22 +606,39 @@ section {
   gap: 40px;
   padding: 40px 0;
   border-bottom: 1px solid var(--line-2);
-  transition: all .4s ease;
+  transition: padding-left .55s cubic-bezier(0.16, 1, 0.3, 1);
   align-items: start;
   position: relative;
+  overflow: hidden;
 }
-.exp-item:hover { padding-left: 24px; }
+.exp-item:hover { padding-left: 22px; }
 .exp-item:hover .exp-role { color: var(--accent); }
+
+/* Left accent bar — grows from top */
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 2px; height: 100%;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform .55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.exp-item:hover::before { transform: scaleY(1); }
+
+/* Gradient background fill */
 .exp-item::after {
   content: '';
   position: absolute;
   left: 0; top: 0;
-  width: 0; height: 100%;
-  background: var(--accent);
-  transition: width .4s ease;
-  opacity: .08;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, rgba(198,255,61,0.07) 0%, transparent 55%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .55s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.exp-item:hover::after { width: 100%; }
+.exp-item:hover::after { opacity: 1; }
 .exp-date {
   font-family: var(--mono);
   font-size: 11px;
@@ -634,7 +651,7 @@ section {
   font-size: clamp(28px, 2.8vw, 48px);
   line-height: 1;
   letter-spacing: -.02em;
-  transition: color .3s ease;
+  transition: color .45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .exp-role .co { color: var(--ink-dim); font-style: italic; display: block; font-size: .55em; margin-top: 10px; letter-spacing: 0; }
 .exp-desc {
