@@ -31,11 +31,7 @@ export default function Contact() {
             <span className="lbl">Grind</span>
             <span className="val">leetcode.com/<br />sanupam2004</span>
           </a>
-          <a className="contact-link" href="tel:+918085734659">
-            <span className="lbl">Direct</span>
-            <span className="val">+91 80857<br />34659</span>
-          </a>
-          <a className="contact-link" href="/playground">
+<a className="contact-link" href="/playground">
             <span className="lbl">AI</span>
             <span className="val">Open Playground →</span>
           </a>
