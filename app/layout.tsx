@@ -1,13 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { Instrument_Serif, Geist, Geist_Mono } from 'next/font/google';
-import dynamic from 'next/dynamic';
 import './globals.css';
 import Cursor from '@/components/Cursor';
 import Loader from '@/components/Loader';
 import Navbar from '@/components/Navbar';
 import GlobalReveal from '@/components/GlobalReveal';
-
-const BgScene = dynamic(() => import('@/components/BgScene'), { ssr: false });
+import BgScene from '@/components/BgScene';
 
 const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
