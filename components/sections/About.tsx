@@ -38,7 +38,7 @@ export default function About() {
             <div className="tag"><span className="num">■</span> IDX.001 — ANUPAM SINGH — 2026</div>
           </div>
 
-          <div className="about-body reveal">
+          <div className="about-body reveal" style={{ paddingTop: '80px' }}>
             <p>
               I&apos;m a computer science undergraduate who treats <em>systems thinking</em> like
               a craft — designing backends that don&apos;t break under load, deploying infrastructure
@@ -57,7 +57,6 @@ export default function About() {
             <div className="about-stats">
               <div><div className="num"><em>2</em>+</div><div className="lbl">Years Shipping</div></div>
               <div><div className="num"><em>350</em>+</div><div className="lbl">DSA Problems</div></div>
-              <div><div className="num"><em>5</em>⭐</div><div className="lbl">Upwork Rating</div></div>
             </div>
           </div>
         </div>
