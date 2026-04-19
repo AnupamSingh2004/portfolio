@@ -11,17 +11,17 @@ export default function About() {
 
           <div className="about-body reveal" style={{ paddingTop: '160px' }}>
             <p>
-              I&apos;m a computer science undergraduate who treats <em>systems thinking</em> like
-              a craft — designing backends that don&apos;t break under load, deploying infrastructure
+              I&apos;m a computer science undergraduate who treats <em>systems thinking </em>     like
+              a craft  designing backends that don&apos;t break under load, deploying infrastructure
               that self-heals, and shipping products people actually use.
             </p>
             <p>
               <span>At Orkait I architect Go services on AWS with goroutines, channels, and a
-              distaste for flaky pipelines. On Upwork I&apos;ve delivered enterprise-grade platforms
-              for international clients — 5-star rated, 60% less manual toil.</span>
+              distaste for flaky pipelines. On Upwork I&apos;ve delivered Full-Stack platforms
+              for international clients, 60% less manual toil.</span>
             </p>
             <p>
-              I believe the best engineering <em>looks</em> boring and <em>feels</em> effortless.
+              I believe the best engineering <em>looks</em> boring and <em>feels </em> effortless.
               Let&apos;s build something like that.
             </p>
 

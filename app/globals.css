@@ -1508,7 +1508,7 @@ footer {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: .2em;
-  color: var(--ink-mute);
+  color: var(--ink-dim);
   text-transform: uppercase;
   position: relative;
   z-index: 2;
