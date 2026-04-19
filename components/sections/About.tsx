@@ -5,6 +5,7 @@ export default function About() {
     <section id="about">
       <div className="container">
         <div className="section-label"><span className="num">01</span> About</div>
+        <h2 className="section-title reveal">The <em>person</em> behind the code.</h2>
         <div className="about-grid">
           <AboutPortrait />
 

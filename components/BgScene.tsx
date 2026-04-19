@@ -67,7 +67,7 @@ export default function BgScene() {
     const globeRadius = 2.4;
 
     const wireGeo = new THREE.SphereGeometry(globeRadius, 40, 24);
-    const wireMat = new THREE.LineBasicMaterial({ color: 0xcdd6b0, transparent: true, opacity: 0.22 });
+    const wireMat = new THREE.LineBasicMaterial({ color: 0x7aaac4, transparent: true, opacity: 0.22 });
     globeGroup.add(new THREE.LineSegments(new THREE.EdgesGeometry(wireGeo, 0.1), wireMat));
 
     const solidGeo = new THREE.SphereGeometry(globeRadius * 0.98, 48, 32);
@@ -87,8 +87,8 @@ export default function BgScene() {
           vec3 N = normalize(vNormal);
           float diff = max(dot(N, normalize(vec3(0.4, 1.0, 0.8))), 0.0);
           float f = pow(1.0 - max(dot(N, vec3(0.0,0.0,1.0)), 0.0), 2.5);
-          vec3 col = mix(vec3(0.09, 0.10, 0.12), vec3(0.14, 0.16, 0.18), diff);
-          col += vec3(0.80, 0.84, 0.69) * f * 0.35;
+          vec3 col = mix(vec3(0.102, 0.184, 0.431), vec3(0.13, 0.22, 0.55), diff);
+          col += vec3(1.0, 0.596, 0.416) * f * 0.35;
           gl_FragColor = vec4(col, 0.9);
         }
       `,
@@ -143,7 +143,7 @@ export default function BgScene() {
           if (d > 0.5) discard;
           float a = smoothstep(0.5, 0.0, d);
           float fade = smoothstep(13.0, 7.0, vDepth);
-          gl_FragColor = vec4(0.80, 0.84, 0.69, a * fade * 0.8);
+          gl_FragColor = vec4(0.733, 0.878, 0.937, a * fade * 0.8);
         }
       `,
     });
@@ -151,7 +151,7 @@ export default function BgScene() {
 
     // Halo ring
     const ringGeo = new THREE.RingGeometry(globeRadius * 1.25, globeRadius * 1.27, 128);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0xcdd6b0, transparent: true, opacity: 0.18, side: THREE.DoubleSide });
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x7aaac4, transparent: true, opacity: 0.18, side: THREE.DoubleSide });
     const ring = new THREE.Mesh(ringGeo, ringMat);
     ring.rotation.x = Math.PI * 0.45;
     globeGroup.add(ring);

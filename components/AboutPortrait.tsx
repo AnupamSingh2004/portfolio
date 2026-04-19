@@ -52,7 +52,7 @@ export default function AboutPortrait() {
       for (const dot of dots) {
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, 1, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(198,255,61,0.28)';
+        ctx.fillStyle = 'rgba(255,152,106,0.28)';
         ctx.fill();
       }
 
@@ -69,10 +69,10 @@ export default function AboutPortrait() {
           const alpha = 0.28 + t * 0.72;
 
           ctx.shadowBlur = t * 12;
-          ctx.shadowColor = '#c6ff3d';
+          ctx.shadowColor = '#FF986A';
           ctx.beginPath();
           ctx.arc(dot.x, dot.y, size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(198,255,61,${alpha})`;
+          ctx.fillStyle = `rgba(255,152,106,${alpha})`;
           ctx.fill();
         }
         ctx.shadowBlur = 0;
@@ -113,7 +113,7 @@ export default function AboutPortrait() {
         .ap-layer { transition: transform 0.18s ease-out; }
         .ap-scanline {
           position: absolute; left: 0; right: 0; height: 1px;
-          background: linear-gradient(90deg, transparent 0%, #c6ff3d88 50%, transparent 100%);
+          background: linear-gradient(90deg, transparent 0%, #FF986A88 50%, transparent 100%);
           pointer-events: none;
           animation: ap-scan 6s linear infinite;
         }
@@ -130,7 +130,7 @@ export default function AboutPortrait() {
         .ap-live { animation: ap-blink 1.4s step-end infinite; }
         .ap-corner-tl, .ap-corner-br {
           position: absolute; width: 14px; height: 14px;
-          border-color: #c6ff3d; border-style: solid; opacity: 0.5;
+          border-color: #FF986A; border-style: solid; opacity: 0.5;
         }
         .ap-corner-tl { top: 16px; left: 16px; border-width: 1px 0 0 1px; }
         .ap-corner-br { bottom: 48px; right: 16px; border-width: 0 1px 1px 0; }
@@ -147,7 +147,7 @@ export default function AboutPortrait() {
       <svg viewBox="0 0 400 500" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="por" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#1a2a0d" />
+            <stop offset="0" stopColor="#0d1848" />
             <stop offset="1" stopColor="#050505" />
           </linearGradient>
         </defs>
@@ -161,22 +161,22 @@ export default function AboutPortrait() {
       <svg viewBox="0 0 400 500" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
         <g ref={layerRef} className="ap-layer">
           {/* Ping rings */}
-          <circle cx="200" cy="220" r="90" fill="none" stroke="#c6ff3d" strokeWidth="1">
+          <circle cx="200" cy="220" r="90" fill="none" stroke="#FF986A" strokeWidth="1">
             <animate attributeName="r" values="90;150" dur="3s" repeatCount="indefinite" />
             <animate attributeName="stroke-opacity" values="0.55;0" dur="3s" repeatCount="indefinite" />
           </circle>
-          <circle cx="200" cy="220" r="90" fill="none" stroke="#c6ff3d" strokeWidth="1">
+          <circle cx="200" cy="220" r="90" fill="none" stroke="#FF986A" strokeWidth="1">
             <animate attributeName="r" values="90;150" dur="3s" begin="1.5s" repeatCount="indefinite" />
             <animate attributeName="stroke-opacity" values="0.55;0" dur="3s" begin="1.5s" repeatCount="indefinite" />
           </circle>
 
           {/* Static rings */}
-          <circle cx="200" cy="220" r="90" fill="none" stroke="#c6ff3d" strokeOpacity="0.6" strokeWidth="1" />
+          <circle cx="200" cy="220" r="90" fill="none" stroke="#FF986A" strokeOpacity="0.6" strokeWidth="1" />
           <circle cx="200" cy="220" r="70" fill="none" stroke="#f5f5f0" strokeOpacity="0.2" strokeWidth="1" />
-          <circle cx="200" cy="220" r="50" fill="#c6ff3d" opacity="0.12" />
+          <circle cx="200" cy="220" r="50" fill="#FF986A" opacity="0.12" />
 
           {/* Radar sweep */}
-          <line x1="200" y1="220" x2="290" y2="220" stroke="#c6ff3d" strokeOpacity="0.55" strokeWidth="1.5" strokeLinecap="round">
+          <line x1="200" y1="220" x2="290" y2="220" stroke="#FF986A" strokeOpacity="0.55" strokeWidth="1.5" strokeLinecap="round">
             <animateTransform attributeName="transform" type="rotate" from="0 200 220" to="360 200 220" dur="4s" repeatCount="indefinite" />
           </line>
 
@@ -188,7 +188,7 @@ export default function AboutPortrait() {
           <text y="14">LON 79.9864</text>
         </g>
 
-        <text x="360" y="40" textAnchor="end" fontFamily="Geist Mono" fontSize="10" letterSpacing="2" fill="#c6ff3d">
+        <text x="360" y="40" textAnchor="end" fontFamily="Geist Mono" fontSize="10" letterSpacing="2" fill="#FF986A">
           <tspan className="ap-live">●</tspan>
           <tspan> LIVE</tspan>
         </text>

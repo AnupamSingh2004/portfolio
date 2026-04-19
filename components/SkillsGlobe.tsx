@@ -142,12 +142,12 @@ export default function SkillsGlobe({ activeCategory = null }: Props) {
     // Dots at each vertex
     globe.add(new THREE.Points(
       wg,
-      new THREE.PointsMaterial({ color: 0xcdd6b0, size: 0.028, transparent: true, opacity: 0.55, sizeAttenuation: true })
+      new THREE.PointsMaterial({ color: 0x7aaac4, size: 0.028, transparent: true, opacity: 0.55, sizeAttenuation: true })
     ));
     // Thin connecting lines
     globe.add(new THREE.LineSegments(
       new THREE.EdgesGeometry(wg),
-      new THREE.LineBasicMaterial({ color: 0xcdd6b0, transparent: true, opacity: 0.12 })
+      new THREE.LineBasicMaterial({ color: 0x7aaac4, transparent: true, opacity: 0.12 })
     ));
 
     // Build sprites
@@ -155,10 +155,10 @@ export default function SkillsGlobe({ activeCategory = null }: Props) {
     const sprites: THREE.Sprite[] = [];
     const textures: THREE.CanvasTexture[] = [];
 
-    const COL_DEFAULT = new THREE.Color(0.78, 0.82, 0.72);
-    const COL_ACTIVE  = new THREE.Color(0.776, 1.0, 0.239);
-    const COL_HOVERED = new THREE.Color(1.0, 1.0, 0.6);
-    const COL_DIM     = new THREE.Color(0.10, 0.12, 0.09);
+    const COL_DEFAULT = new THREE.Color(0.733, 0.878, 0.937);
+    const COL_ACTIVE  = new THREE.Color(1.0, 0.596, 0.416);
+    const COL_HOVERED = new THREE.Color(1.0, 0.82, 0.72);
+    const COL_DIM     = new THREE.Color(0.086, 0.118, 0.329);
 
     for (let i = 0; i < count; i++) {
       const skill = ALL_SKILLS[i];
