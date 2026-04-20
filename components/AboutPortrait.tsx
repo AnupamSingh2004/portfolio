@@ -180,7 +180,7 @@ export default function AboutPortrait() {
             <animateTransform attributeName="transform" type="rotate" from="0 200 220" to="360 200 220" dur="4s" repeatCount="indefinite" />
           </line>
 
-          <text x="200" y="228" textAnchor="middle" fontFamily="Instrument Serif" fontStyle="italic" fontSize="64" fill="#f5f5f0">as</text>
+          <text x="200" y="220" textAnchor="middle" dominantBaseline="central" fontFamily="Instrument Serif" fontStyle="italic" fontSize="64" fill="#f5f5f0">DEV</text>
         </g>
 
         <g transform="translate(40,440)" fill="#8a8a85" fontFamily="Geist Mono" fontSize="10" letterSpacing="2">

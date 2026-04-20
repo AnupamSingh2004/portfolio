@@ -6,6 +6,7 @@ import Loader from '@/components/Loader';
 import Navbar from '@/components/Navbar';
 import GlobalReveal from '@/components/GlobalReveal';
 import BgScene from '@/components/BgScene';
+import ScrollTop from '@/components/ScrollTop';
 
 const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <Cursor />
         <GlobalReveal />
+        <ScrollTop />
         {children}
       </body>
     </html>
