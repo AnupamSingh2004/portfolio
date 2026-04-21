@@ -20,17 +20,17 @@ export default function Loader() {
 
     function start() {
       stages.forEach((s, i) => {
-        setTimeout(() => s.classList.add('show'), 400 + i * 300);
+        setTimeout(() => s.classList.add('show'), 300 + i * 220);
       });
       let stage = 0;
       let p = 0;
-      const startAt = Date.now() + 1800;
+      const startAt = Date.now() + 1200;
 
       function tick() {
         const now = Date.now();
         if (now < startAt) { requestAnimationFrame(tick); return; }
         const target = stageTargets[stage];
-        p += (target - p) * 0.04;
+        p += (target - p) * 0.055;
         if (p < target - 0.3) {
           pctEl.textContent = String(Math.floor(p)).padStart(2, '0');
           fill.style.transform = `scaleX(${p / 100})`;
@@ -47,13 +47,13 @@ export default function Loader() {
           if (mark) mark.textContent = '●';
           stage++;
           if (stage < stageTargets.length) {
-            setTimeout(() => requestAnimationFrame(tick), 400);
+            setTimeout(() => requestAnimationFrame(tick), 280);
           } else {
             statusEl.textContent = 'Ready';
             setTimeout(() => {
               document.getElementById('loader')?.classList.add('done');
               document.body.classList.add('loaded');
-            }, 900);
+            }, 650);
           }
         }
       }

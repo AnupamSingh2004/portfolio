@@ -9,7 +9,7 @@ export default function About() {
         <div className="about-grid">
           <AboutPortrait />
 
-          <div className="about-body reveal" style={{ paddingTop: '160px' }}>
+          <div className="about-body reveal">
             <p>
               I&apos;m a computer science undergraduate who treats <em>systems thinking </em>     like
               a craft  designing backends that don&apos;t break under load, deploying infrastructure
