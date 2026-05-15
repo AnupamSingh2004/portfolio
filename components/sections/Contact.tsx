@@ -23,17 +23,17 @@ export default function Contact() {
             <span className="lbl">Code</span>
             <span className="val">github.com/<br />AnupamSingh2004</span>
           </a>
-          <a className="contact-link" href="#" target="_blank" rel="noopener noreferrer">
+          <a className="contact-link" href="https://www.linkedin.com/in/anupam-singh-78911224a/" target="_blank" rel="noopener noreferrer">
             <span className="lbl">Network</span>
             <span className="val">LinkedIn /<br />Anupam Singh</span>
           </a>
-          <a className="contact-link" href="https://leetcode.com/sanupam2004" target="_blank" rel="noopener noreferrer">
+          <a className="contact-link" href="https://leetcode.com/u/sanupam2004/" target="_blank" rel="noopener noreferrer">
             <span className="lbl">Grind</span>
             <span className="val">leetcode.com/<br />sanupam2004</span>
           </a>
-<a className="contact-link" href="/playground">
-            <span className="lbl">AI</span>
-            <span className="val">Open Playground →</span>
+          <a className="contact-link" href="https://www.upwork.com/freelancers/~01f16973f42747baeb" target="_blank" rel="noopener noreferrer">
+            <span className="lbl">Freelance</span>
+            <span className="val">Upwork /<br />Anupam Singh</span>
           </a>
         </div>
       </div>

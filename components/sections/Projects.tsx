@@ -195,9 +195,9 @@ export default function Projects() {
                     </div>
                     <div className="project-links">
                       {project.links.map((link) => (
-                        <a key={link.label} href={link.url} className="btn">
+                        <a key={link.label} href={link.url} className="btn" target="_blank" rel="noopener noreferrer">
                           {link.label}
-                          {link.label === 'GitHub' && (
+                          {(link.label === 'GitHub' || link.label === 'GitHub Profile') && (
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <path d="M7 17l10-10M7 7h10v10" />
                             </svg>

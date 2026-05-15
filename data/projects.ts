@@ -24,8 +24,8 @@ export const projects: Project[] = [
     ],
     techStack: ['Next.js', 'Flutter', 'Django', 'Ollama', 'Docker', 'PostgreSQL'],
     links: [
-      { label: 'GitHub', url: '#' },
-      { label: 'Live Demo', url: '#' },
+      { label: 'GitHub', url: 'https://github.com/AnupamSingh2004/Juris-Lead' },
+      { label: 'Live Demo', url: 'https://juris-lead.vercel.app' },
     ],
   },
   {
@@ -41,7 +41,7 @@ export const projects: Project[] = [
       { value: '2', label: 'Diseases' },
     ],
     techStack: ['Flutter', 'Django', 'TensorFlow', 'Satellite APIs', 'OCR'],
-    links: [{ label: 'GitHub', url: '#' }],
+    links: [{ label: 'GitHub', url: 'https://github.com/AnupamSingh2004/AarogyaRekha' }],
   },
   {
     id: 'orkait-backend',
@@ -56,7 +56,7 @@ export const projects: Project[] = [
       { value: '99.9%', label: 'Uptime' },
     ],
     techStack: ['Go', 'AWS ECS', 'Docker', 'GitHub Actions', 'Terraform'],
-    links: [{ label: 'Case Study', url: '#' }],
+    links: [{ label: 'GitHub Profile', url: 'https://github.com/AnupamSingh2004' }],
   },
   {
     id: 'freelance-suite',
@@ -71,6 +71,9 @@ export const projects: Project[] = [
       { value: '5★', label: 'Avg Rating' },
     ],
     techStack: ['Next.js', 'Prisma', 'PostgreSQL', 'OpenAI', 'i18n'],
-    links: [{ label: 'View Portfolio', url: '#' }],
+    links: [
+      { label: 'GitHub Profile', url: 'https://github.com/AnupamSingh2004' },
+      { label: 'Upwork', url: 'https://www.upwork.com/freelancers/~01f16973f42747baeb' },
+    ],
   },
 ];
