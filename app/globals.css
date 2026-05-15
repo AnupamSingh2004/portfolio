@@ -598,62 +598,28 @@ section {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: 80px;
-  align-items: start;
+  align-items: stretch;
 }
 .about-portrait {
   position: relative;
-  aspect-ratio: 4/5;
   border: 1px solid var(--line);
   border-radius: 4px;
-  perspective: 1200px;
+  overflow: hidden;
   cursor: crosshair;
 }
 
-/* 3D inner */
-.ap-inner {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  transition: transform 0.75s cubic-bezier(0.4, 0.2, 0.2, 1);
-  border-radius: 4px;
-}
-.ap-inner.ap-flipped { transform: rotateY(180deg); }
-
-/* shared face styles */
-.ap-face {
-  position: absolute;
-  inset: 0;
-  border-radius: 4px;
-  overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* back face is pre-rotated */
-.ap-back {
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-.ap-back-bg {
+/* Dark gradient background */
+.ap-bg {
   position: absolute;
   inset: 0;
   background: linear-gradient(160deg, #0d1848 0%, #050820 100%);
 }
-.ap-back-glow {
-  position: absolute;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 280px; height: 280px;
-  background: radial-gradient(circle, rgba(255,152,106,0.25) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 1;
-}
+
 .ap-back-label {
-  position: relative;
+  position: absolute;
+  bottom: 56px; left: 0;
   z-index: 3;
-  padding: 0 24px 56px;
+  padding: 0 24px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -671,30 +637,6 @@ section {
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--ink-dim);
-}
-
-/* flip button — hover-only HUD pill */
-.ap-flip-btn {
-  position: absolute;
-  bottom: 58px; right: 14px;
-  z-index: 10;
-  display: flex; align-items: center; gap: 6px;
-  padding: 5px 10px;
-  border-radius: 2px;
-  background: rgba(5, 8, 32, 0.72);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,152,106,0.3);
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .2em;
-  color: #FF986A;
-  opacity: 0;
-  transition: opacity 0.25s ease, background 0.2s, border-color 0.2s;
-}
-.about-portrait:hover .ap-flip-btn { opacity: 1; }
-.ap-flip-btn:hover {
-  background: rgba(255,152,106,0.15);
-  border-color: rgba(255,152,106,0.7);
 }
 
 .about-portrait .tag {

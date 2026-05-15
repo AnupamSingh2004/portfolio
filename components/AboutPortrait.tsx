@@ -1,18 +1,15 @@
 'use client';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function AboutPortrait() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const layerRef = useRef<SVGGElement>(null);
-  const [flipped, setFlipped] = useState(false);
 
   useEffect(() => {
     const card = wrapRef.current;
     const canvas = canvasRef.current;
-    const layer = layerRef.current;
-    if (!card || !canvas || !layer) return;
+    if (!card || !canvas) return;
 
     const ctx = canvas.getContext('2d')!;
     const spacing = 20;
@@ -73,13 +70,9 @@ export default function AboutPortrait() {
       targetMx = e.clientX - r.left;
       targetMy = e.clientY - r.top;
       targetInfluence = 1;
-      const px = ((e.clientX - r.left) / r.width - 0.5) * 22;
-      const py = ((e.clientY - r.top) / r.height - 0.5) * 22;
-      layer.style.transform = `translate(${px}px, ${py}px)`;
     };
     const onLeave = () => {
       targetInfluence = 0;
-      layer.style.transform = 'translate(0,0)';
     };
 
     card.addEventListener('mousemove', onMove);
@@ -96,117 +89,30 @@ export default function AboutPortrait() {
 
   return (
     <div ref={wrapRef} className="about-portrait">
-      <style>{`
-        .ap-layer { transition: transform 0.18s ease-out; }
-        .ap-scanline {
-          position: absolute; left: 0; right: 0; height: 1px;
-          background: linear-gradient(90deg, transparent 0%, #FF986A88 50%, transparent 100%);
-          pointer-events: none;
-          animation: ap-scan 6s linear infinite;
-        }
-        @keyframes ap-scan {
-          0%   { top: 0%;   opacity: 0; }
-          4%   { opacity: 0.7; }
-          96%  { opacity: 0.25; }
-          100% { top: 100%; opacity: 0; }
-        }
-        @keyframes ap-blink {
-          0%, 49% { opacity: 1; }
-          50%, 100% { opacity: 0; }
-        }
-        .ap-live { animation: ap-blink 1.4s step-end infinite; }
-        .ap-corner-tl, .ap-corner-br {
-          position: absolute; width: 14px; height: 14px;
-          border-color: #FF986A; border-style: solid; opacity: 0.5;
-          z-index: 2;
-        }
-        .ap-corner-tl { top: 16px; left: 16px; border-width: 1px 0 0 1px; }
-        .ap-corner-br { bottom: 48px; right: 16px; border-width: 0 1px 1px 0; }
-      `}</style>
+      {/* Dark gradient background */}
+      <div className="ap-bg" />
 
-      {/* 3D flip container */}
-      <div className={`ap-inner${flipped ? ' ap-flipped' : ''}`}>
+      {/* Dot grid canvas — behind the image */}
+      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }} />
 
-        {/* FRONT — radar card */}
-        <div className="ap-face ap-front">
-          {/* Flip button lives inside each face so it's always on the visible side */}
-          <button className="ap-flip-btn" onClick={() => setFlipped(true)} aria-label="Show photo">
-            <span>FLIP</span>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-            </svg>
-          </button>
-          <div className="ap-scanline" />
-          <div className="ap-corner-tl" />
-          <div className="ap-corner-br" />
+      {/* Profile image — above the dot grid */}
+      <Image
+        src="/images/myself/myself-no-bg.png"
+        alt="Anupam Singh"
+        fill
+        sizes="(max-width: 900px) 100vw, 40vw"
+        style={{ objectFit: 'contain', objectPosition: 'center bottom', zIndex: 2 }}
+        priority
+      />
 
-          <svg viewBox="0 0 400 500" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id="por" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#0d1848" />
-                <stop offset="1" stopColor="#050505" />
-              </linearGradient>
-            </defs>
-            <rect width="400" height="500" fill="url(#por)" />
-          </svg>
-
-          <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-
-          <svg viewBox="0 0 400 500" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
-            <g ref={layerRef} className="ap-layer">
-              <circle cx="200" cy="220" r="90" fill="none" stroke="#FF986A" strokeWidth="1">
-                <animate attributeName="r" values="90;150" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="stroke-opacity" values="0.55;0" dur="3s" repeatCount="indefinite" />
-              </circle>
-              <circle cx="200" cy="220" r="90" fill="none" stroke="#FF986A" strokeWidth="1">
-                <animate attributeName="r" values="90;150" dur="3s" begin="1.5s" repeatCount="indefinite" />
-                <animate attributeName="stroke-opacity" values="0.55;0" dur="3s" begin="1.5s" repeatCount="indefinite" />
-              </circle>
-              <circle cx="200" cy="220" r="90" fill="none" stroke="#FF986A" strokeOpacity="0.6" strokeWidth="1" />
-              <circle cx="200" cy="220" r="70" fill="none" stroke="#f5f5f0" strokeOpacity="0.2" strokeWidth="1" />
-              <circle cx="200" cy="220" r="50" fill="#FF986A" opacity="0.12" />
-              <line x1="200" y1="220" x2="290" y2="220" stroke="#FF986A" strokeOpacity="0.55" strokeWidth="1.5" strokeLinecap="round">
-                <animateTransform attributeName="transform" type="rotate" from="0 200 220" to="360 200 220" dur="4s" repeatCount="indefinite" />
-              </line>
-              <text x="200" y="220" textAnchor="middle" dominantBaseline="central" fontFamily="Instrument Serif" fontStyle="italic" fontSize="64" fill="#f5f5f0">DEV</text>
-            </g>
-            <g transform="translate(40,440)" fill="#8a8a85" fontFamily="Geist Mono" fontSize="10" letterSpacing="2">
-              <text>LAT 23.1815</text>
-              <text y="14">LON 79.9864</text>
-            </g>
-            <text x="360" y="40" textAnchor="end" fontFamily="Geist Mono" fontSize="10" letterSpacing="2" fill="#FF986A">
-              <tspan className="ap-live">●</tspan>
-              <tspan> LIVE</tspan>
-            </text>
-          </svg>
-
-          <div className="tag"><span className="num">■</span> IDX.001 — ANUPAM SINGH — 2026</div>
-        </div>
-
-        {/* BACK — photo */}
-        <div className="ap-face ap-back">
-          <button className="ap-flip-btn" onClick={() => setFlipped(false)} aria-label="Show radar">
-            <span>BACK</span>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-            </svg>
-          </button>
-          <div className="ap-back-bg" />
-          <Image
-            src="/images/myself/myself without background.png"
-            alt="Anupam Singh"
-            fill
-            sizes="(max-width: 900px) 100vw, 40vw"
-            style={{ objectFit: 'contain', objectPosition: 'center bottom' }}
-            priority
-          />
-          <div className="ap-back-label">
-            <span className="ap-back-name">Anupam <em>Singh</em></span>
-            <span className="ap-back-title">Software Engineer</span>
-          </div>
-          <div className="tag"><span className="num">■</span> IDX.001 — ANUPAM SINGH — 2026</div>
-        </div>
+      {/* Name label */}
+      <div className="ap-back-label" style={{ zIndex: 3 }}>
+        <span className="ap-back-name">Anupam <em>Singh</em></span>
+        <span className="ap-back-title">Software Engineer</span>
       </div>
+
+      {/* Bottom tag */}
+      <div className="tag" style={{ zIndex: 3 }}><span className="num">■</span> IDX.001 — ANUPAM SINGH — 2026</div>
     </div>
   );
 }
