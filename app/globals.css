@@ -792,249 +792,183 @@ section {
   border-radius: 999px;
 }
 
-/* ============ PROJECTS HORIZONTAL ============ */
-.projects-wrap {
+/* ============ PROJECTS · 2-COLUMN GRID ============ */
+.projects-section {
+  padding: 100px 0 60px;
   position: relative;
-  height: 100vh;
-  padding: 0;
+  z-index: 2;
 }
-.projects-wrap .sticky-inner {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+
+.projects-grid {
   display: flex;
-  align-items: center;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 20px;
 }
-.projects-track {
-  display: flex;
-  gap: 40px;
-  padding: 0 40px;
-  align-items: center;
-  height: 100%;
-  will-change: transform;
-}
-.project-intro {
-  min-width: 520px;
-  flex-shrink: 0;
-}
-.project-card {
-  min-width: 780px;
-  flex-shrink: 0;
-  height: 70vh;
-  max-height: 620px;
+
+/* Each row holds a pair of cards */
+.project-row {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--bg-2);
-  transition: transform .6s ease;
+  /* Slide-up-from-nothing animation */
+  opacity: 0;
+  transform: translateY(70px) scale(0.97);
+  transition:
+    opacity 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
+
+/* Stagger: second card delays slightly */
+.project-row.visible .project-card:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.project-row.visible .project-card:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition-delay: 160ms;
+}
+
+/* Hover */
+.project-card:hover {
+  border-color: rgba(255, 152, 106, 0.22);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 152, 106, 0.12);
+}
+
+/* ── Visual area ── */
 .project-visual {
   position: relative;
-  background: #1a2f6e;
+  background: linear-gradient(135deg, #152860 0%, #0d1848 100%);
   overflow: hidden;
-  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
 }
-.project-visual canvas, .project-visual .mock {
+
+/* Web screenshot */
+.project-visual .web-screenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-card:hover .web-screenshot {
+  transform: scale(1.03);
+}
+
+/* App (mobile) visual */
+.project-visual.app-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 50%, rgba(187,224,239,0.04), transparent 70%),
+    linear-gradient(135deg, #152860 0%, #0d1848 100%);
+}
+
+.app-frame {
+  position: relative;
+  height: 90%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 6px 30px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(187,224,239,0.08);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-card:hover .app-frame {
+  transform: scale(1.03) translateY(-4px);
+}
+.app-frame img {
+  height: 100%;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Terminal visual */
+.project-visual .mock {
   position: absolute;
   inset: 0;
   width: 100%; height: 100%;
 }
+
+/* ── Info area ── */
 .project-info {
-  padding: 40px;
+  padding: 22px 26px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex: 1;
 }
 .project-num {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 9px;
   letter-spacing: .2em;
   color: var(--accent);
 }
 .project-title {
   font-family: var(--serif);
-  font-size: clamp(36px, 3.5vw, 56px);
-  line-height: 1;
+  font-size: clamp(22px, 2.2vw, 32px);
+  line-height: 1.05;
   letter-spacing: -.02em;
-  margin: 24px 0 12px;
+  margin: 10px 0 6px;
+  color: var(--ink);
 }
 .project-subtitle {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: .15em;
   text-transform: uppercase;
   color: var(--ink-dim);
-  margin-bottom: 24px;
+  margin-bottom: 10px;
 }
 .project-desc {
   font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--ink-dim);
-  margin-bottom: 24px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--accent-2);
+  margin-bottom: 12px;
 }
-.project-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  padding: 20px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 24px;
-}
-.project-metrics > div { padding: 0 12px; border-right: 1px solid var(--line); }
-.project-metrics > div:last-child { border-right: none; }
-.project-metrics > div:first-child { padding-left: 0; }
-.project-metrics .val {
-  font-family: var(--serif);
-  font-size: 28px;
-  line-height: 1;
-}
-.project-metrics .val em { color: var(--accent); font-style: italic; }
-.project-metrics .lbl {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  margin-top: 6px;
-}
-.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .project-tags span {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: .1em;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--ink-dim);
+  transition: border-color 0.3s ease, color 0.3s ease;
 }
-.project-links { display: flex; gap: 10px; }
-
-.projects-progress {
-  position: absolute;
-  bottom: 40px;
-  left: 40px;
-  right: 40px;
-  z-index: 3;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .2em;
-  color: var(--ink-dim);
-  pointer-events: none;
+.project-card:hover .project-tags span {
+  border-color: var(--line-2);
+  color: var(--ink);
 }
-.projects-progress .bar {
-  flex: 1;
-  margin: 0 20px;
-  height: 1px;
-  background: var(--line);
-  position: relative;
-}
-.projects-progress .bar::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 0;
-  height: 100%;
-  width: var(--p, 0%);
-  background: var(--accent);
-}
-
-/* Project visual mocks */
-.mock-juris {
-  background: linear-gradient(135deg, #1a2f6e 0%, #152860 100%);
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.mock-juris .chip { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: .2em; letter-spacing: .2em; }
-.mock-juris .head { font-family: var(--serif); font-size: 28px; line-height: 1; }
-.mock-juris .card {
-  background: rgba(255,255,255,.03);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 14px;
-}
-.mock-juris .card .label { font-family: var(--mono); font-size: 9px; color: var(--ink-dim); letter-spacing: .15em; }
-.mock-juris .card .val { font-family: var(--serif); font-size: 18px; margin-top: 6px; }
-.mock-juris .bars { display: flex; gap: 4px; align-items: flex-end; height: 60px; margin-top: 10px; }
-.mock-juris .bars div { flex: 1; background: var(--accent); opacity: .7; }
-
-.mock-aarogya {
-  background: radial-gradient(circle at 30% 30%, #213882, #152860 60%);
-  position: relative;
-  overflow: hidden;
-}
-.mock-aarogya .globe {
-  position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  width: 85%; aspect-ratio: 1;
-  border-radius: 50%;
-  border: 1px solid var(--line-2);
-  background: radial-gradient(circle at 30% 30%, rgba(187,224,239,.05), transparent 60%);
-  animation: rotate 30s linear infinite;
-}
-.mock-aarogya .globe::before, .mock-aarogya .globe::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-}
-.mock-aarogya .globe::before { transform: scale(.7); }
-.mock-aarogya .globe::after { transform: scale(.4); border-color: var(--accent); opacity: .3; }
-.mock-aarogya .dot {
-  position: absolute;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 12px var(--accent);
-}
-.mock-aarogya .pulse {
-  position: absolute;
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  border: 1px solid var(--accent);
-  animation: pulseRing 2s infinite;
-}
-@keyframes pulseRing {
-  0% { transform: scale(.5); opacity: 1; }
-  100% { transform: scale(3); opacity: 0; }
-}
-@keyframes rotate { to { transform: translate(-50%, -50%) rotate(360deg); } }
-.mock-aarogya .readout {
-  position: absolute;
-  top: 24px; left: 24px; right: 24px;
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--mono);
+.project-links { display: flex; gap: 8px; margin-top: auto; }
+.project-links .btn {
+  padding: 12px 18px;
   font-size: 10px;
-  color: var(--ink-dim);
-  letter-spacing: .15em;
 }
-.mock-aarogya .readout .live { color: var(--accent); }
-.mock-aarogya .stats {
-  position: absolute;
-  bottom: 24px; left: 24px; right: 24px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--ink-dim);
-  letter-spacing: .1em;
-}
-.mock-aarogya .stats .v { font-family: var(--serif); font-size: 22px; color: var(--ink); margin-bottom: 4px; letter-spacing: 0; }
-.mock-aarogya .stats .v em { color: var(--accent); font-style: italic; }
 
+/* ── Mock Orkait terminal (retained) ── */
 .mock-orkait {
   background: #152860;
   position: relative;
@@ -1083,57 +1017,6 @@ section {
 }
 .mock-orkait .flow .node.active { border-color: var(--accent); color: var(--accent); }
 .mock-orkait .flow .arrow { color: var(--ink-dim); }
-
-.mock-upwork {
-  background: #152860;
-  position: relative;
-  overflow: hidden;
-}
-.mock-upwork .grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: .5;
-}
-.mock-upwork .content {
-  position: absolute;
-  inset: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.mock-upwork .rating {
-  display: flex;
-  gap: 4px;
-  color: var(--accent);
-  font-size: 24px;
-}
-.mock-upwork .big {
-  font-family: var(--serif);
-  font-size: 72px;
-  line-height: .9;
-  letter-spacing: -.03em;
-}
-.mock-upwork .big em { color: var(--accent); font-style: italic; }
-.mock-upwork .lang {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  margin-top: auto;
-}
-.mock-upwork .lang div {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  padding: 10px 6px;
-  border: 1px solid var(--line);
-  text-align: center;
-  color: var(--ink-dim);
-}
 
 /* ============ SKILLS ============ */
 .skills-wrap {
@@ -1795,8 +1678,10 @@ footer {
   .ach.span-4, .ach.span-5, .ach.span-6, .ach.span-7, .ach.span-8, .ach.span-12 { grid-column: span 1; }
   .exp-item { grid-template-columns: 1fr; gap: 10px; padding: 28px 0; }
   .exp-tags { justify-content: flex-start; }
-  .project-card { min-width: 88vw; grid-template-columns: 1fr; height: auto; max-height: none; }
-  .project-visual { aspect-ratio: 4/3; border-right: none; border-bottom: 1px solid var(--line);}
+  .project-row { grid-template-columns: 1fr; gap: 18px; }
+  .project-visual { aspect-ratio: 16/9; }
+  .project-visual.app-visual { aspect-ratio: 16/9; }
+  .app-frame { height: 80%; border-radius: 16px; }
   body { cursor: auto; }
   button, a { cursor: pointer; }
   .cursor-dot, .cursor-ring { display: none; }
