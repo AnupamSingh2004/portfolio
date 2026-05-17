@@ -30,7 +30,9 @@ export default function Navbar() {
         <a href="#work" data-num="02" onClick={e => handleNav(e, 'work')}>Work</a>
         <a href="#projects" data-num="03" onClick={e => handleNav(e, 'projects')}>Projects</a>
         <a href="#stack" data-num="04" onClick={e => handleNav(e, 'stack')}>Stack</a>
-        <a href="#contact" data-num="05" onClick={e => handleNav(e, 'contact')}>Contact</a>
+        <a href="#achievements" data-num="05" onClick={e => handleNav(e, 'achievements')}>Achievements</a>
+        <a href="#education" data-num="06" onClick={e => handleNav(e, 'education')}>Education</a>
+        <a href="#contact" data-num="07" onClick={e => handleNav(e, 'contact')}>Contact</a>
       </div>
       <div className="status">Available · IN</div>
     </nav>
