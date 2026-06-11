@@ -122,7 +122,7 @@ export default function SkillsGlobe({ activeCategory = null }: Props) {
     camera.position.copy(CAM_POS);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
     let cw = 0, ch = 0;
     const sizeWrap = () => {
@@ -190,12 +190,14 @@ export default function SkillsGlobe({ activeCategory = null }: Props) {
     const timer = new THREE.Timer();
     let rafId: number;
     let mx = -1, my = -1;
+    let mouseMoved = false;
 
     const onMouse = (e: MouseEvent) => {
       const r = wrap.getBoundingClientRect();
       mx = e.clientX - r.left; my = e.clientY - r.top;
+      mouseMoved = true;
     };
-    const onLeave = () => { mx = -1; my = -1; hoveredRef.current = -1; };
+    const onLeave = () => { mx = -1; my = -1; hoveredRef.current = -1; mouseMoved = true; };
     wrap.addEventListener('mousemove', onMouse);
     wrap.addEventListener('mouseleave', onLeave);
 
@@ -256,24 +258,57 @@ export default function SkillsGlobe({ activeCategory = null }: Props) {
       }
     }
 
-    function loop() {
+    let lastFrame = 0;
+    function loop(now = 0) {
       rafId = requestAnimationFrame(loop);
+      if (now - lastFrame < 1000 / 30) return;
+      lastFrame = now;
       timer.update();
       const t = timer.getElapsed();
       globe.rotation.y = t * 0.18;
       globe.rotation.x = Math.sin(t * 0.14) * 0.08;
       globe.updateMatrixWorld(true);
-      updateHover();
+      if (mouseMoved) {
+        updateHover();
+        mouseMoved = false;
+      }
       updateSprites();
       renderer.render(scene, camera);
     }
-    loop();
+
+    let isVisible = false;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !isVisible) {
+          isVisible = true;
+          loop();
+        } else if (!entry.isIntersecting && isVisible) {
+          isVisible = false;
+          cancelAnimationFrame(rafId);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    io.observe(wrap);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else if (isVisible) {
+        loop();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
 
     return () => {
       cancelAnimationFrame(rafId);
+      io.disconnect();
       window.removeEventListener('resize', sizeWrap);
       wrap.removeEventListener('mousemove', onMouse);
       wrap.removeEventListener('mouseleave', onLeave);
+      document.removeEventListener('visibilitychange', onVisibility);
       textures.forEach(t => t.dispose());
       sprites.forEach(s => (s.material as THREE.SpriteMaterial).dispose());
       renderer.dispose();

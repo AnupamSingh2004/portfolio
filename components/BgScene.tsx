@@ -14,14 +14,14 @@ export default function BgScene() {
     camera.position.set(0, 0, 9);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
 
     const clock = new THREE.Clock();
 
     // --- Particle field ---
-    const count = 600;
+    const count = 300;
     const particleGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     const sizes = new Float32Array(count);
@@ -66,11 +66,11 @@ export default function BgScene() {
     const globeGroup = new THREE.Group();
     const globeRadius = 2.4;
 
-    const wireGeo = new THREE.SphereGeometry(globeRadius, 40, 24);
+    const wireGeo = new THREE.SphereGeometry(globeRadius, 24, 16);
     const wireMat = new THREE.LineBasicMaterial({ color: 0x7aaac4, transparent: true, opacity: 0.22 });
     globeGroup.add(new THREE.LineSegments(new THREE.EdgesGeometry(wireGeo, 0.1), wireMat));
 
-    const solidGeo = new THREE.SphereGeometry(globeRadius * 0.98, 48, 32);
+    const solidGeo = new THREE.SphereGeometry(globeRadius * 0.98, 32, 20);
     const solidMat = new THREE.ShaderMaterial({
       transparent: true,
       uniforms: { uTime: { value: 0 } },
@@ -96,7 +96,7 @@ export default function BgScene() {
     globeGroup.add(new THREE.Mesh(solidGeo, solidMat));
 
     // Surface dots (fibonacci distribution)
-    const dotCount = 1400;
+    const dotCount = 700;
     const dotGeo = new THREE.BufferGeometry();
     const dotPos = new Float32Array(dotCount * 3);
     const dotSize = new Float32Array(dotCount);
@@ -150,7 +150,7 @@ export default function BgScene() {
     globeGroup.add(new THREE.Points(dotGeo, dotMat));
 
     // Halo ring
-    const ringGeo = new THREE.RingGeometry(globeRadius * 1.25, globeRadius * 1.27, 128);
+    const ringGeo = new THREE.RingGeometry(globeRadius * 1.25, globeRadius * 1.27, 64);
     const ringMat = new THREE.MeshBasicMaterial({ color: 0x7aaac4, transparent: true, opacity: 0.18, side: THREE.DoubleSide });
     const ring = new THREE.Mesh(ringGeo, ringMat);
     ring.rotation.x = Math.PI * 0.45;
@@ -163,11 +163,14 @@ export default function BgScene() {
     // Mouse / scroll tracking
     let mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
     let scrollYVal = 0, targetScrollY = 0;
+    // Cache scrollable height — refreshed on resize, not every frame
+    let docScrollH = Math.max(1, document.body.scrollHeight - window.innerHeight);
 
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      docScrollH = Math.max(1, document.body.scrollHeight - window.innerHeight);
     };
     const onMouse = (e: MouseEvent) => {
       targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -180,15 +183,17 @@ export default function BgScene() {
     window.addEventListener('scroll', onScroll, { passive: true });
 
     let rafId: number;
-    function animate() {
+    let lastFrame = 0;
+    function animate(now = 0) {
       rafId = requestAnimationFrame(animate);
+      if (now - lastFrame < 1000 / 30) return;
+      lastFrame = now;
       const t = clock.getElapsedTime();
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
       scrollYVal += (targetScrollY - scrollYVal) * 0.08;
 
-      const docH = Math.max(1, document.body.scrollHeight - window.innerHeight);
-      const progress = scrollYVal / docH;
+      const progress = scrollYVal / docScrollH;
 
       particles.rotation.y = t * 0.01;
       particles.rotation.x = mouseY * 0.05;
@@ -209,11 +214,21 @@ export default function BgScene() {
     }
     animate();
 
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else {
+        animate();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('visibilitychange', onVisibility);
       renderer.dispose();
     };
   }, []);

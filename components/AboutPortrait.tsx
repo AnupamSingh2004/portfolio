@@ -33,7 +33,7 @@ export default function AboutPortrait() {
     let influence = 0, targetInfluence = 0;
     let rafId: number;
 
-    const render = () => {
+    function render() {
       rafId = requestAnimationFrame(render);
       mx += (targetMx - mx) * 0.1;
       my += (targetMy - my) * 0.1;
@@ -62,8 +62,7 @@ export default function AboutPortrait() {
         }
         ctx.shadowBlur = 0;
       }
-    };
-    render();
+    }
 
     const onMove = (e: MouseEvent) => {
       const r = card.getBoundingClientRect();
@@ -79,11 +78,39 @@ export default function AboutPortrait() {
     card.addEventListener('mouseleave', onLeave);
     window.addEventListener('resize', resize);
 
+    let isVisible = false;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !isVisible) {
+          isVisible = true;
+          render();
+        } else if (!entry.isIntersecting && isVisible) {
+          isVisible = false;
+          cancelAnimationFrame(rafId);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    io.observe(card);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else if (isVisible) {
+        render();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
     return () => {
       cancelAnimationFrame(rafId);
+      io.disconnect();
       card.removeEventListener('mousemove', onMove);
       card.removeEventListener('mouseleave', onLeave);
       window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
 

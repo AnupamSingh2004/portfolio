@@ -8,6 +8,17 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    company: 'Prepelo · Backend',
+    role: 'Backend Engineer Intern',
+    period: '2026 · 05 — PRESENT',
+    bulletPoints: [
+      'Building a RAG-based text extraction pipeline in Python (FastAPI) for book knowledge ingestion, integrating LLM APIs for intelligent Q&A processing.',
+      'Developing and containerizing backend services using Django REST Framework and Docker across a multi-service architecture.',
+      'Designing the core backend infrastructure from scratch for an early-stage startup.',
+    ],
+    tags: ['FastAPI', 'Django', 'Docker', 'RAG', 'LLMs'],
+  },
+  {
     company: 'Orkait · Backend & Cloud',
     role: 'SDE Intern',
     period: '2026 · 01 — 03',
